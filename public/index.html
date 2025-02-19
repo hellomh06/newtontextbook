@@ -49,7 +49,7 @@
     </script>
 </body> -->
   
-<!--   <body>
+   <body>
     <h2>Enter Password to Access the Textbooks</h2>
     <input type="password" id="password" placeholder="Enter password">
     <button onclick="checkPassword()">Login</button>
@@ -82,52 +82,7 @@
         });
     </script>
 </body>
- -->
+
   
-  <body>
-    <h2>Enter Password to Access the Textbooks</h2>
-    <input type="password" id="password" placeholder="Enter password">
-    <button onclick="checkPassword()">Login</button>
-    <p id="message" style="color: red;"></p>
-
-    <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            var savedUser = localStorage.getItem("loggedInUser");
-            if (savedUser) {
-                speak("welcome bro");
-                window.location.href = savedUser;
-            }
-        });
-
-        function checkPassword() {
-            var input = document.getElementById("password").value;
-            var redirectPage = "";
-
-            if (input === "yourpassword") {
-                redirectPage = "login.html";
-            } else if (input === "teacherpassword") {
-                redirectPage = "teacher.html";
-            } else {
-                document.getElementById("message").innerText = "Incorrect password. Try again.";
-                return;
-            }
-
-            localStorage.setItem("loggedInUser", redirectPage);
-            speak("welcome bro");
-            window.location.href = redirectPage;
-        }
-
-        function speak(text) {
-            var msg = new SpeechSynthesisUtterance(text);
-            window.speechSynthesis.speak(msg);
-        }
-
-        document.getElementById("password").addEventListener("keypress", function(event) {
-            if (event.key === "Enter") {
-                checkPassword();
-            }
-        });
-    </script>
-</body>
 
 </html>

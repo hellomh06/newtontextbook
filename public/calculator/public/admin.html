@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Admin - GPA Calculations</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 20px; }
+    table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+    th, td { border: 1px solid #ccc; padding: 8px; text-align: left; }
+  </style>
+</head>
+<body>
+  <h1>Admin - GPA Calculations</h1>
+  <div>
+    <label for="password">Admin Password:</label>
+    <input type="password" id="password" />
+    <button onclick="fetchData()">Login</button>
+  </div>
+  <div id="calculations" style="display: none;">
+    <h2>Calculations</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Timestamp</th>
+          <th>Student Name</th>
+          <th>GPA</th>
+          <th>Courses</th>
+        </tr>
+      </thead>
+      <tbody id="calcBody"></tbody>
+    </table>
+  </div>
+  <script>
+    function fetchData() {
+      const password = document.getElementById('password').value;
+      fetch('/api/calculations', {
+        headers: { 'Authorization': password }
+      })
+      .then(response => {
+        if (!response.ok) throw new Error('Unauthorized or server error');
+        return response.json();
+      })
+      .then(calculations => {
+        const calcBody = document.getElementById('calcBody');
+        calcBody.innerHTML = '';
+        calculations.forEach(calc => {
+          const row = `<tr>
+            <td>${calc.timestamp}</td>
+            <td>${calc.studentName}</td>
+            <td>${calc.gpa}</td>
+            <td>${calc.courses.map(course => `${course.courseName} (${course.grade}, ${course.courseType})`).join(', ')}</td>
+          </tr>`;
+          calcBody.innerHTML += row;
+        });
+        document.getElementById('calculations').style.display = 'block';
+      })
+      .catch(error => {
+        alert(error.message);
+        console.error(error);
+      });
+    }
+  </script>
+</body>
+</html>
